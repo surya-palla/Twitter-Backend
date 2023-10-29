@@ -6,29 +6,42 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @Slf4j
 public class UserService {
     @Autowired
     private UserRepository userRepository;
-    private Exception NoSuchElementException;
 
     public User createUser(User user){
-    log.info("Creating user with userName: "+user.getUsername());
-    user = userRepository.save(user);
-    log.info("User with userName: ",user.getUsername()," has been created with userId: ",user.getId() );
-    return user;
+        log.info("Creating user with userName: "+user.getUsername()+" userEmail: "+user.getEmail());
+        User userCheck = userRepository.findFirstByEmailOrUsername(user.getEmail(), user.getUsername());
+        if(userCheck == null){
+            user = userRepository.save(user);
+            log.info("User with userName: "+user.getUsername()+" has been created with userId: "+user.getId() );
+            return user;
+        }
+        else{
+            log.info("User with userName: "+user.getUsername()+" or with email: "+user.getEmail()+" already exists in database");
+            return null;
+        }
     }
 
     public User getUserWithId(String id){
-        User user = null;
-        user = userRepository.findById(id).get();
-        return user;
+        Optional<User> userCheck = userRepository.findById(id);
+        if(userCheck.isEmpty()){
+            return null;
+        }
+        return userCheck.get();
+    }
+
+    public User getUserWithUserName(String id){
+        return userRepository.findFirstByUsername(id);
     }
 
     public Iterable<User> getUsers(){
-        Iterable<User> user = userRepository.findAll();
-        return user;
+        return userRepository.findAll();
     }
 
 }
