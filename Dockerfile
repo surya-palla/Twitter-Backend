@@ -8,7 +8,7 @@ WORKDIR /app
 COPY tar/Twitter_Backend-0.0.1-SNAPSHOT.jar app.jar
 
 # Expose the port that the Spring Boot application will run on
-EXPOSE 3000
+EXPOSE 3004
 
 # Define the command to run the Spring Boot application when the container starts
 CMD ["java", "-jar", "app.jar"]
