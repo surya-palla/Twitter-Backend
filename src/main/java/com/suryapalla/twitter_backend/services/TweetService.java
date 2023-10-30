@@ -29,6 +29,7 @@ public class TweetService {
     }
 
     public List<TweetResponse> getTweets(){
+        log.info("Request reached");
         Aggregation aggregation = Aggregation.newAggregation(
                 Aggregation.lookup("User", "user_id", "_id", "user")
         );

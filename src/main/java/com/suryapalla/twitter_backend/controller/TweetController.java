@@ -5,6 +5,7 @@ import com.suryapalla.twitter_backend.pojo.TweetResponse;
 import com.suryapalla.twitter_backend.services.TweetService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -28,10 +29,10 @@ public class TweetController {
         return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body("{\"message\": \"Tweet poseted successfully\"}");
     }
 
+    @CrossOrigin("*")
     @GetMapping(value = "/Tweet")
     public  ResponseEntity<?> getTweets(){
         List<TweetResponse> tweetResponse = tweetService.getTweets();
-
 
         return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(tweetResponse);
     }
